@@ -1,9 +1,9 @@
 Name: YOUR NAME HERE
 
-| Date    |  Time  |                                     Update |
-|:--------|:------:|-------------------------------------------:|
-| April 5 | 9-10pm | I tried to write abstract, efficient code. |
-|         |        |                                            |
+| Date   |     Time      |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    Update |
+|:-------|:-------------:|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------:|
+| Oct 10 | 11:25-11:55am | I used the whiteboard in class to draft an initial approach to the problem. My idea is a method similar to binary search in which I look at chars in the middle of a section and find sequences of repeats. I then repeat the same process for the new largest unsearched chunk and I keep doing so until the largest STR repeat size exceeds the maximum unsearched chunk's size. THis allows me to exit checking early, giving my algorithm huge gains. I started implementing this method but did not finish in class. |
+|        |               |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
 
 
 To add a new row to the table, click into a cell and then hit shift-enter.
