@@ -46,7 +46,7 @@ public class DNA {
         // Iterate through the rest of the sequence, updating the buffer and checking for matches
         int index = strLength;
         int count = 0;
-        while (index < charArray.length) {
+        while (index <= charArray.length) {
             // Clear the highest bits of the buffer, as we only care about the last 2 * STR.length bits
             buffer = buffer & mask;
 
@@ -58,17 +58,19 @@ public class DNA {
 
                 // Update the buffer with the next STR.length characters
                 // If index is higher than the length of the sequence, do not update the buffer as the STR can't exist
-                if (index < charArray.length) {
+                if (index <= charArray.length) {
                     buffer = 0;
                     for (int i = 0; i < strLength; i++) {
                         buffer = buffer << 2;
                         buffer = buffer | map[charArray[index - strLength + i]];
                     }
                 }
-            // If the buffer does not match the transformed STR, move to the next character
+                // If the buffer does not match the transformed STR, move to the next character
             } else {
-                buffer = buffer << 2;
-                buffer = buffer | map[charArray[index]];
+                if (index < charArray.length) {
+                    buffer = buffer << 2;
+                    buffer = buffer | map[charArray[index]];
+                }
                 index++;
                 // If the buffer is not a match, reset the count
                 count = 0;
