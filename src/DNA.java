@@ -16,37 +16,31 @@ public class DNA {
 
     public static long hash(String string, int length) {
         long hash = 0;
-        for (int i = 0; i < length; i++)
+        for (int i = 0; i < length; i++) {
             hash = (hash * radix + string.charAt(i)) % largePrime;
+        }
         return hash;
     }
 
-    public static void rabinKarp(String STR, String sequence) {
+    public static int rabinKarp(String STR, String sequence) {
         long strHash = hash(STR, STR.length());
         int strLength = STR.length();
         long seqHash = hash(sequence.substring(0, strLength), strLength);
         long seqLength = sequence.length();
+        int count = 0;
 
-        for (int i = strLength; i < seqLength; i++)
-            if (strHash == seqHash)
-                // begin checking for consecutive appearances
-                seqHash = hash(sequence[1 + (i - strLength), i])
+        for (int i = seqLength; i <= seqLength - strLength; i++) {
+            if (sequence.substring(i, i + strLength).equals(STR)) {
+                count++;
+
+            }
+        }
 
 
+        return count;
     }
 
-
-
     public static int STRCount(String sequence, String STR) {
-
-        // Create a map from the characters to their integer values
-       char[] charArray = sequence.toCharArray();
-//        byte[] map = new byte[256];
-//        map['A'] = 0;
-//        map['C'] = 1;
-//        map['G'] = 2;
-//        map['T'] = 3;
-
-
+        return rabinKarp(STR, sequence);
     }
 }
