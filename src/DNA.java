@@ -13,6 +13,7 @@
 public class DNA {
     public static int radix = 256;
     public static long largePrime = 54321102419L;
+    public static long highestCount = 1;
 
     public static long hash(String string, int length) {
         long hash = 0;
@@ -22,25 +23,33 @@ public class DNA {
         return hash;
     }
 
-    public static int rabinKarp(String STR, String sequence) {
+    public static void rabinKarp(String STR, String sequence) {
         long strHash = hash(STR, STR.length());
         int strLength = STR.length();
         long seqHash = hash(sequence.substring(0, strLength), strLength);
-        long seqLength = sequence.length();
-        int count = 0;
+        int seqLength = sequence.length();
+        int count = 1;
 
-        for (int i = seqLength; i <= seqLength - strLength; i++) {
-            if (sequence.substring(i, i + strLength).equals(STR)) {
+        int index = strLength;
+        while (index + strLength < seqLength) {
+            if (sequence.substring(index, index + strLength).equals(STR)) {
+                // Count the number of consecutive STRs
                 count++;
+                index += strLength;
+            }
+            else {
+                count = 0;
+                index++;
+            }
 
+            if (count > highestCount) {
+                highestCount = count;
             }
         }
-
-
-        return count;
     }
 
     public static int STRCount(String sequence, String STR) {
-        return rabinKarp(STR, sequence);
+        rabinKarp(STR, sequence);
+        return (int) highestCount;
     }
 }
