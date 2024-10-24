@@ -9,47 +9,61 @@
  * Completed by: Landon Moceri
  *</p>
  */
-
 public class DNA {
-    public static int radix = 256;
-    public static long largePrime = 54321102419L;
-    public static long highestCount = 1;
+    public static final int radix = 4;
+    public static int[] charMap = new int[256];
 
-    public static long hash(String string, int length) {
+    public static long hornerHash(String string, int length) {
         long hash = 0;
-        for (int i = 0; i < length; i++) {
-            hash = (hash * radix + string.charAt(i)) % largePrime;
+        for (int index = 0; index < length; index++) {
+            hash = hash << 2;
+            hash = hash | charMap[string.charAt(index)];
         }
         return hash;
     }
 
-    public static void rabinKarp(String STR, String sequence) {
-        long strHash = hash(STR, STR.length());
+    public static int rabinKarp(String sequence, String STR) {
         int strLength = STR.length();
-        long seqHash = hash(sequence.substring(0, strLength), strLength);
         int seqLength = sequence.length();
-        int count = 1;
+        int numBits = strLength * 2;
+        long mask = (1L << numBits) - 1;
+        long strHash = hornerHash(STR, strLength);
+        long seqHash = hornerHash(sequence.substring(0, strLength), strLength);
+        int count = 0;
+        int maxCount = 0;
+        int index = 0;
 
-        int index = strLength;
-        while (index + strLength < seqLength) {
-            if (sequence.substring(index, index + strLength).equals(STR)) {
-                // Count the number of consecutive STRs
+        while (index <= seqLength - strLength) {
+            if (seqHash == strHash) {
                 count++;
                 index += strLength;
-            }
-            else {
+                if (count > maxCount) {
+                    maxCount = count;
+                }
+                if (index <= seqLength - strLength) {
+                    seqHash = hornerHash(sequence.substring(index, index + strLength), strLength);
+                }
+            } else {
                 count = 0;
+                if (index < seqLength - strLength) {
+                    int nextChar = charMap[sequence.charAt(index + strLength)];
+                    seqHash = seqHash << 2;
+                    seqHash = seqHash | nextChar;
+                    seqHash = seqHash & mask;
+                }
                 index++;
             }
-
-            if (count > highestCount) {
-                highestCount = count;
-            }
         }
+
+        return maxCount;
     }
 
     public static int STRCount(String sequence, String STR) {
-        rabinKarp(STR, sequence);
-        return (int) highestCount;
+        charMap['A'] = 0;
+        charMap['a'] = 0;
+        charMap['C'] = 1;
+        charMap['G'] = 2;
+        charMap['T'] = 3;
+        return rabinKarp(sequence, STR);
     }
 }
